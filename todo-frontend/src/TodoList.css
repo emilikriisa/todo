@@ -1,0 +1,197 @@
+/* General Styling */
+html {
+    padding: 0 50px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-top: 50px;
+}
+
+/* Filter Section Styling */
+input[type='text'],
+input[type='date'],
+select,
+button {
+    padding: 10px 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type='text']:focus,
+input[type='date']:focus,
+select:focus,
+button:focus {
+    outline: none;
+    border-color: #007BFF;
+}
+
+label {
+    display: inline-block;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+ul li.todo-meta {
+    display: block;
+}
+
+ul li.todo-values {
+    display: grid;
+}
+
+/* Todo List Styling */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+ul li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.todo-meta {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.todo-link {
+    font-size: 16px;
+    font-weight: bold;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.todo-values {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.todo-values div {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+.todo-values div:last-child {
+    font-weight: bold;
+    color: #28a745; /* Green for completed */
+}
+
+.todo-values div.in-progress {
+    color: #dc3545; /* Red for in-progress */
+}
+
+/* Add spacing between elements for readability */
+.todo-item > * {
+    margin: 0 10px;
+}
+
+.filters {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin: 5px 0;
+}
+
+label.isDone {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Add Todo Form Button Styling */
+button.add-todo {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.add-todo:hover {
+    background-color: #218838;
+}
+
+button.add-todo:focus {
+    outline: none;
+}
+
+/* Toggle Form Button */
+button.cancel {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.cancel:hover {
+    background-color: #c82333;
+}
+
+/* Responsive Design for Mobile Devices */
+@media (max-width: 600px) {
+    div {
+        padding: 10px;
+    }
+
+    input[type='text'],
+    input[type='date'],
+    button {
+        width: 100%;
+    }
+}
+
+

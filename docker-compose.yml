@@ -1,0 +1,48 @@
+﻿version: '3'
+services:
+  frontend:
+    container_name: todo-frontend
+    image: todo-frontend
+    depends_on:
+      - api
+    build:
+      context: ./todo-frontend
+      dockerfile: Dockerfile
+    ports:
+      - 8181:80
+
+  api:
+    container_name: todo-api
+    image: todo-api
+    depends_on:
+      - db
+    build:
+      context: ./todo-backend
+      dockerfile: todo-backend.API/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=db;Username=postgres;Password=postgres
+    ports:
+      - 8182:8080
+    command: >
+      bash -c "
+        dotnet tool install --global dotnet-ef && 
+        dotnet ef database update &&
+        dotnet run
+      "
+  
+  db:
+    image: postgres:15
+    container_name: todo-db
+    restart: always
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5442:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+    driver: local
