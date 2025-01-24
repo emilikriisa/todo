@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams, useNavigate, Link} from 'react-router-dom';
 import axios from 'axios';
 import './TodoDetail.css';
@@ -7,7 +7,7 @@ import NewTodoForm from "./NewTodoForm";
 const TodoDetail = () => {
     const apiUrl = "http://localhost:8182";
     const navigate = useNavigate();
-    const { id } = useParams();
+    const {id} = useParams();
     const [todo, setTodo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -21,10 +21,11 @@ const TodoDetail = () => {
         axios
             .get(`${apiUrl}/api/todo/${id}`)
             .then((response) => {
-                setTodo(response.data.todo);
-                setSubTodos(response.data.childTodos || []); // Ensure child todos are handled
-                setUpdatedDescription(response.data.todo.description);
-                setUpdatedDueDate(new Date(response.data.todo.dueAt)); // Format date as YYYY-MM-DD
+                const { todo, childTodos } = response.data;
+                setTodo(todo);
+                setSubTodos(childTodos || []);
+                setUpdatedDescription(todo.description);
+                setUpdatedDueDate(todo.dueAt ? todo.dueAt : '');
                 setLoading(false);
             })
             .catch((error) => {
@@ -35,14 +36,26 @@ const TodoDetail = () => {
     }, [id]);
 
 
+
     const handleMarkAsCompleted = () => {
+        if (!todo) {
+            console.error('Todo is not defined');
+            return;
+        }
+
         axios
             .put(`${apiUrl}/api/todo/${id}`, {
                 ...todo,
                 isDone: !todo.isDone,
             })
             .then(() => {
-                setTodo((prevTodo) => ({ ...prevTodo, isDone: !prevTodo.isDone }));
+                setTodo((prevTodo) => {
+                    if (!prevTodo) {
+                        console.error('Previous todo is not defined');
+                        return todo; // fallback
+                    }
+                    return { ...prevTodo, isDone: !prevTodo.isDone };
+                });
             })
             .catch((error) => {
                 console.error('Error marking todo as completed', error);
@@ -68,8 +81,7 @@ const TodoDetail = () => {
                 description: updatedDescription,
                 dueAt: updatedDueDate,
             })
-            .then((response) => {
-                // Update the state directly with the new values
+            .then(() => {
                 setTodo((prevTodo) => ({
                     ...prevTodo,
                     description: updatedDescription,
@@ -114,8 +126,7 @@ const TodoDetail = () => {
                 <form className="todo-form" onSubmit={handleUpdate}>
                     <div className="form-group">
                         <label>
-                            Description:
-                            <input
+                            Description: <input
                                 type="text"
                                 value={updatedDescription}
                                 onChange={(e) => setUpdatedDescription(e.target.value)}
@@ -125,8 +136,7 @@ const TodoDetail = () => {
                     </div>
                     <div className="form-group">
                         <label>
-                            Due Date:
-                            <input
+                            Due Date: <input
                                 type="date"
                                 value={updatedDueDate}
                                 onChange={(e) => setUpdatedDueDate(e.target.value)}
@@ -147,10 +157,10 @@ const TodoDetail = () => {
                         <strong>Description:</strong> {todo.description}
                     </p>
                     <p>
-                        <strong>Created At:</strong> {new Date(todo.createdAt).toLocaleDateString()}
+                        <strong>Created At:</strong> {todo.createdAt}
                     </p>
                     <p>
-                        <strong>Due At:</strong> {new Date(todo.dueAt).toLocaleDateString()}
+                        <strong>Due At:</strong> {todo.dueAt}
                     </p>
                     <p>
                         <strong>Status:</strong> {todo.isDone ? 'Done' : 'In progress'}

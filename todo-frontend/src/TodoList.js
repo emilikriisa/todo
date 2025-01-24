@@ -2,31 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './TodoList.css';
-import NewTodoForm from './NewTodoForm'; // Import the form component
+import NewTodoForm from './NewTodoForm';
 
 const TodoList = () => {
-    const apiUrl = "http://localhost:8182";  // Backend container URL
+    const apiUrl = "http://localhost:8182";
     const [todos, setTodos] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showForm, setShowForm] = useState(false); // State to toggle form visibility
+    const [showForm, setShowForm] = useState(false);
     const [filters, setFilters] = useState({
         description: '',
         dueAt: '',
         isDone: null,
     });
 
-    const [debouncedFilters, setDebouncedFilters] = useState(filters); // Debounced filters
+    const [debouncedFilters, setDebouncedFilters] = useState(filters);
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             setDebouncedFilters(filters);
-        }, 300); // Wait for 300ms before applying filters
-        return () => clearTimeout(timeoutId); // Cleanup timeout
+        }, 300); // wait 300ms before applying filters
+        return () => clearTimeout(timeoutId);
     }, [filters]);
 
     useEffect(() => {
         fetchTodos();
-    }, [debouncedFilters]); // Fetch todos when debounced filters change
+    }, [debouncedFilters]); // fetch todos when filters change
 
     const fetchTodos = () => {
         setLoading(true);
@@ -43,17 +43,39 @@ const TodoList = () => {
     };
 
     const handleNewTodo = (newTodo) => {
-        // Add the new todo to the list without refetching
         setTodos((prevTodos) => [...prevTodos, newTodo]);
-        setShowForm(false); // Hide the form after submission
+        setShowForm(false);
     };
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
+
+        let transformedValue;
+
+        if (value === 'null') {
+            transformedValue = null;
+        } else if (value === 'true') {
+            transformedValue = true;
+        } else if (value === 'false') {
+            transformedValue = false;
+        } else {
+            transformedValue = value;
+        }
+
         setFilters((prevFilters) => ({
             ...prevFilters,
-            [name]: value === 'null' ? null : value === 'true' ? true : value === 'false' ? false : value,
+            [name]: transformedValue,
         }));
+    };
+
+    const getIsDoneValue = (isDone) => {
+        if (isDone === null) {
+            return 'null';
+        } else if (isDone) {
+            return 'true';
+        } else {
+            return 'false';
+        }
     };
 
     const handleFilterClear = () => {
@@ -84,7 +106,7 @@ const TodoList = () => {
                 />
                 <select
                     name="isDone"
-                    value={filters.isDone === null ? 'null' : filters.isDone ? 'true' : 'false'}
+                    value={getIsDoneValue(filters.isDone)}
                     onChange={handleFilterChange}
                 >
                     <option value="null">No Filter</option>
