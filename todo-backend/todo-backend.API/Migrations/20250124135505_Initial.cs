@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace todobackend.API.Migrations
 {
     /// <inheritdoc />
-    public partial class Cascading : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,8 +20,8 @@ namespace todobackend.API.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatedAt = table.Column<DateOnly>(type: "date", nullable: false),
                     DueAt = table.Column<DateOnly>(type: "date", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    isDone = table.Column<bool>(type: "boolean", nullable: false),
+                    Description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    IsDone = table.Column<bool>(type: "boolean", nullable: false),
                     ParentId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>

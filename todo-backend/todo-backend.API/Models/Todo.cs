@@ -1,17 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace todo_backend.API;
+namespace todo_backend.API.Models;
 
 public class Todo
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+    
+    [Required]
     public DateOnly CreatedAt { get; set; }
+    
+    [Required]
     public DateOnly DueAt { get; set; }
-    public string Description { get; set; }
-    public bool isDone { get; set; }
+
+    [Required] 
+    [MaxLength(100)]
+    public string Description { get; set; } = "";
+    
+    [Required]
+    public bool IsDone { get; set; }
     
     public int? ParentId { get; set; }
 

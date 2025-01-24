@@ -12,8 +12,8 @@ using todo.API.DAL;
 namespace todobackend.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250121204017_Cascading")]
-    partial class Cascading
+    [Migration("20250124135505_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,16 +38,17 @@ namespace todobackend.API.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateOnly>("DueAt")
                         .HasColumnType("date");
 
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("boolean");
+
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("isDone")
-                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 

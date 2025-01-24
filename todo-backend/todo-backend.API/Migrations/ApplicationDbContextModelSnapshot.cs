@@ -35,16 +35,17 @@ namespace todobackend.API.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateOnly>("DueAt")
                         .HasColumnType("date");
 
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("boolean");
+
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("isDone")
-                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 

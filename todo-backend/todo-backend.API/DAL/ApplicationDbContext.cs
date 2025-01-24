@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using todo_backend.API;
+using todo_backend.API.Models;
 
 namespace todo.API.DAL;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-
     public DbSet<Todo> Todos { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
